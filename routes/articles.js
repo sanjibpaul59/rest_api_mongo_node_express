@@ -6,19 +6,17 @@ router.get("/", (req, res) => {
   res.send("Articles");
 });
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   const article = new Articles({
     title: req.body.title,
     description: req.body.description,
   });
-  article
-    .save()
-    .then((data) => {
-      res.json(data);
-    })
-    .catch((err) => {
-      res.json({ message: err });
-    });
+  try {
+    const savedArticle = await article.save();
+    res.json(savedArticle);
+  } catch (err) {
+    res.json({ message: err });
+  }
 });
 
 module.exports = router;
